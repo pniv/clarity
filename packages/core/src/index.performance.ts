@@ -31,6 +31,7 @@ describe('performance', () => {
       import '@cds/core/button-handle/register.js';
       import '@cds/core/button-inline/register.js';
       import '@cds/core/button-sort/register.js';
+      import '@cds/core/button-split/register.js';
       import '@cds/core/card/register.js';
       import '@cds/core/checkbox/register.js';
       import '@cds/core/datalist/register.js';
@@ -38,6 +39,7 @@ describe('performance', () => {
       import '@cds/core/divider/register.js';
       import '@cds/core/file/register.js';
       import '@cds/core/forms/register.js';
+      import '@cds/core/grid/register.js';
       import '@cds/core/icon/register.js';
       import '@cds/core/input/register.js';
       import '@cds/core/modal/register.js';
@@ -55,6 +57,6 @@ describe('performance', () => {
       import '@cds/core/toggle/register.js';
       import '@cds/core/tree-view/register.js';`;
 
-    expect((await testBundleSize(bundle, { optimize: true })).kb).toBeLessThan(47);
+    expect((await testBundleSize(bundle, { optimize: true })).kb).toBeLessThan(57);
   });
 });
