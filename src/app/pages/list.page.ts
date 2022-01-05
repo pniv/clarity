@@ -10,7 +10,7 @@ import { DemoTabData } from '../components/demo.component';
 @Component({
   selector: 'app-list',
   template: `
-    <h1>List</h1>
+    <h1 cds-text="display" cds-layout="m-t:lg">List</h1>
 
     <demo [tabs]="demo">
       <h3>Ordered list</h3>

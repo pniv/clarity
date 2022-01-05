@@ -7,10 +7,22 @@ pre {
 
 .branding img {
   height: 2rem;
+  vertical-align: middle;
+  width: 36px;
+  height: 36px;
+}
+
+.branding .logo-text {
+  color: var(--clr-header-title-color,#fafafa);
 }
 
 .header-6 [cds-text="title"] {
   color: var(--cds-global-color-neutral-0);
+  font-weight: var(--clr-header-title-font-weight,400);
+  font-size: .8rem;
+  letter-spacing: .01em;
+  line-height: 3rem;
+  text-decoration: none;
 }
 
 .docs-changer {

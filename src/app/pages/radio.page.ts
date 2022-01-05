@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-radio',
   template: `
-    <h1>Radio</h1>
+    <h1 cds-text="display" cds-layout="m-t:lg">Radio</h1>
     <not-ready name="Radio"></not-ready>
   `,
 })
