@@ -12,13 +12,13 @@ function RowSingleAction() {
 
   const [rowActionDrowdownHidden, toggleRowActionDrowdownHidden] = useState<boolean>(true);
 
-  const [rowActionAnchor, rowActionAnchorChange] = useState<any>(null);
+  const [rowActionAnchor, rowActionAnchorChange] = useState<string | HTMLElement | undefined>();
   
   const [rowActionItem, rowActionItemChange] = useState<TestVM>();
 
-  const rowActionOnClick = (event: any, item: TestVM) => {
+  const rowActionOnClick = (event: React.MouseEvent<HTMLElement, MouseEvent>, item: TestVM) => {
     toggleRowActionDrowdownHidden(() => !rowActionDrowdownHidden);
-    rowActionAnchorChange(() => event.target);
+    rowActionAnchorChange(() => event.target as HTMLElement);
     rowActionItemChange(() => item);
   }
   
@@ -35,7 +35,7 @@ function RowSingleAction() {
 
           {data.map((item: any) => (
             <CdsGridRow key={item.id}>
-              <CdsGridCell {...{'type':'action'}}>
+              <CdsGridCell>
                 <CdsButtonAction aria-label="choose available host actions" onClick={event => rowActionOnClick(event, item)}></CdsButtonAction>
               </CdsGridCell>
               <CdsGridCell>{item.id}</CdsGridCell>
@@ -48,7 +48,7 @@ function RowSingleAction() {
           <CdsGridFooter></CdsGridFooter>
         </CdsGrid>
 
-        <CdsDropdown {...{'hidden':rowActionDrowdownHidden, anchor: rowActionAnchor}} >
+        <CdsDropdown hidden={rowActionDrowdownHidden ? true : undefined}  anchor={rowActionAnchor}>
             <CdsButton block action="flat" size="sm">Shutdown {rowActionItem?.id}</CdsButton>
             <CdsButton block action="flat" size="sm">Restart {rowActionItem?.id}</CdsButton>
         </CdsDropdown>

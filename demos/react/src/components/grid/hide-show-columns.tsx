@@ -10,31 +10,29 @@ import { useRef, useState } from 'react';
 function HideShowColumns() {
   const data = getVMData();
 
-  const hideShowAnchorRef = useRef(null);
+  const hideShowAnchorRef = useRef<string | HTMLElement | undefined>();
 
-  const [hideShowDrowdownHidden, toggleHideShowDrowdown] = useState<boolean>(true);
+  const [hideShowDrowdownHidden, setHideShowDropdownHidden] = useState<boolean>(true);
 
-  const hiddenColumnsInitState = {
+  const [hiddenColumns, setHiddenColumns] = useState({
     'status': false,
     'cpu': false,
     'memory': true
-  }
-
-  const [hiddenColumns, toggleHiddenStates] = useState<any>(hiddenColumnsInitState);
+  });
 
   const onHideShowAnchorClick = () => {
-    toggleHideShowDrowdown(() => !hideShowDrowdownHidden);
+    setHideShowDropdownHidden(() => !hideShowDrowdownHidden);
   }
 
   const toggleColumn = (column: string, checked: boolean) => {
-    toggleHiddenStates(() => ({...hiddenColumns, [column]: !checked}))
+    setHiddenColumns({...hiddenColumns, [column]: !checked})
   }
 
   const onSelectAllClick = () => {
     for(let key in hiddenColumns) {
-      hiddenColumns[key] = false;
+      hiddenColumns[key as keyof typeof hiddenColumns] = false;
     }
-    toggleHiddenStates(() => ({...hiddenColumns}));
+    setHiddenColumns({...hiddenColumns});
   }
 
   return (
@@ -43,16 +41,16 @@ function HideShowColumns() {
       <div className="content">
         <CdsGrid className="demo-grid">
           <CdsGridColumn>Host</CdsGridColumn>
-          {hiddenColumns['status']?null:<CdsGridColumn>Status</CdsGridColumn>}
-          {hiddenColumns['cpu']?null:<CdsGridColumn>CPU</CdsGridColumn>}
-          {hiddenColumns['memory']?null:<CdsGridColumn>Memory</CdsGridColumn>}
+          {hiddenColumns['status'] ? null : <CdsGridColumn>Status</CdsGridColumn>}
+          {hiddenColumns['cpu'] ? null : <CdsGridColumn>CPU</CdsGridColumn>}
+          {hiddenColumns['memory'] ? null : <CdsGridColumn>Memory</CdsGridColumn>}
 
           {data.map((item: any) => (
             <CdsGridRow key={item.id}>
               <CdsGridCell>{item.id}</CdsGridCell>
-              {hiddenColumns['status']?null:<CdsGridCell>{item.status}</CdsGridCell>}
-              {hiddenColumns['cpu']?null:<CdsGridCell>{item.cpu}</CdsGridCell>}
-              {hiddenColumns['memory']?null:<CdsGridCell>{item.memory}</CdsGridCell>}
+              {hiddenColumns['status'] ? null : <CdsGridCell>{item.status}</CdsGridCell>}
+              {hiddenColumns['cpu'] ? null : <CdsGridCell>{item.cpu}</CdsGridCell>}
+              {hiddenColumns['memory'] ? null : <CdsGridCell>{item.memory}</CdsGridCell>}
             </CdsGridRow>
           ))}
 
@@ -60,7 +58,7 @@ function HideShowColumns() {
             <CdsButtonAction id="toggle-columns" shape="view-columns" aria-label="filter column" ref={hideShowAnchorRef} onClick={onHideShowAnchorClick}></CdsButtonAction>
           </CdsGridFooter>
         </CdsGrid>
-        <CdsDropdown {...{'anchor': (hideShowAnchorRef.current as any), 'position': 'top', hidden: hideShowDrowdownHidden}}>
+        <CdsDropdown anchor={(hideShowAnchorRef.current)} hidden={hideShowDrowdownHidden ? true : undefined} >
           <CdsCheckboxGroup layout="vertical">
             <CdsCheckbox>
               <label>Status</label>

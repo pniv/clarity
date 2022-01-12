@@ -2,28 +2,28 @@ import { CdsGrid, CdsGridColumn, CdsGridRow, CdsGridCell, CdsGridFooter, CdsGrid
 import { CdsButtonExpand } from '@cds/react/button-expand';
 
 import { getVMData, TestVM } from '@cds/core/demo';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 
 function Detail() {
   const data = getVMData();
 
-  const [detailAnchor, detailAnchorChange] = useState<any>();
-  const [detailItem, detailItemChange] = useState<TestVM>();
+  const detailAnchorRef = useRef<string | HTMLElement | undefined>();
+  const [detailItem, setDetailItem] = useState<TestVM>();
 
   const onDetailExpand = (anchor: any, item: TestVM) => {
     if(item.id === detailItem?.id) {
-      detailItemChange(() => undefined);
-      detailAnchorChange(() => undefined);  
+      setDetailItem(undefined);
+      detailAnchorRef.current = undefined;
       return;
     }
-    detailItemChange(() => item);
-    detailAnchorChange(() => anchor);
+    setDetailItem(item);
+    detailAnchorRef.current = anchor;
   }
 
   const onCloseChange = () => {
-    detailItemChange(() => undefined);
-    detailAnchorChange(() => undefined);
+    setDetailItem(undefined);
+    detailAnchorRef.current = undefined;
   }
 
   return (
@@ -40,7 +40,7 @@ function Detail() {
           {data.map((item: any) => (
             <CdsGridRow key={item.id}>
               <CdsGridCell>
-                <CdsButtonExpand pressed={item.id === detailItem?.id} onClick={event => {onDetailExpand(event.target, item)}} id="current-detail-demo" aria-label="view host details" action="detail"></CdsButtonExpand>
+                <CdsButtonExpand pressed={item.id === detailItem?.id} onClick={event => {onDetailExpand(event.target, item)}} id="current-detail-demo" aria-label="view host details" action="detail" />
               </CdsGridCell>
               <CdsGridCell>{item.id}</CdsGridCell>
               <CdsGridCell>{item.status}</CdsGridCell>
@@ -49,14 +49,14 @@ function Detail() {
             </CdsGridRow>
           ))}
 
-            <CdsGridDetail {...{'hidden': !detailItem, 'anchor': detailAnchor}} onCloseChange={onCloseChange}>
-              <h2>Host: {detailItem?.id}</h2>
-              <p>Status: {detailItem?.status}</p>
-              <p>CPU: {detailItem?.cpu}</p>
-              <p>Memory: {detailItem?.memory}</p>
-            </CdsGridDetail>
+          <CdsGridDetail hidden ={!detailItem ? true : undefined} anchor={detailAnchorRef.current} onCloseChange={onCloseChange}>
+            <h2>Host: {detailItem?.id}</h2>
+            <p>Status: {detailItem?.status}</p>
+            <p>CPU: {detailItem?.cpu}</p>
+            <p>Memory: {detailItem?.memory}</p>
+          </CdsGridDetail>
 
-            <CdsGridFooter></CdsGridFooter>
+          <CdsGridFooter />
         </CdsGrid>
       </div>
     </div>

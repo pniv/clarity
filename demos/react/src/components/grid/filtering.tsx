@@ -7,20 +7,20 @@ import { useRef, useState } from 'react';
 
 function Filtering() {
 
-  const filterAnchorRef = useRef(null);
+  const filterAnchorRef = useRef<string | HTMLElement | undefined>();
 
-  const [filterDrowdownHidden, toggleFilterDrowdown] = useState<boolean>(true);
+  const [filterDrowdownHidden, setFilterDropdownHidden] = useState<boolean>(true);
 
-  const [filterValue, filterValueChange] = useState<string>("");
+  const [filterValue, setFilterValue] = useState<string>("");
 
   const data = getVMData();
 
   const onFilterActionClick = () => {
-    toggleFilterDrowdown(() => !filterDrowdownHidden);
+    setFilterDropdownHidden((hidden) => !hidden);
   }
 
   const onFilterValueChange = (event: any) => {
-    filterValueChange(() => event.target.value);
+    setFilterValue(event.target.value);
   }
 
   return (
@@ -46,7 +46,7 @@ function Filtering() {
           ))}
           <CdsGridFooter></CdsGridFooter>
         </CdsGrid>
-        <CdsDropdown className="demo-filter-dropdown" {...{'hidden':filterDrowdownHidden, 'anchor': (filterAnchorRef.current as any)}} >
+        <CdsDropdown className="demo-filter-dropdown" anchor={filterAnchorRef.current} hidden={filterDrowdownHidden ? true : undefined} >
           <CdsSearch control-width="shrink">
             <input type="search" aria-label="search hosts" onChange={onFilterValueChange} />
           </CdsSearch>

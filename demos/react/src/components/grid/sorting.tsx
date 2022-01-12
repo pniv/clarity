@@ -9,15 +9,15 @@ import { ButtonSort } from '@cds/core/button-sort';
 function Sorting() {
   const data = getVMData();
 
-  const [sortType, sortTypeChange] = useState<ButtonSort>("none");
+  const [sortType, setSortType] = useState<ButtonSort>("none");
 
   const onSortActionClick = () => {
     if(sortType==="none") {
-      sortTypeChange(() => "ascending");
+      setSortType("ascending");
     } else if(sortType === "ascending") {
-      sortTypeChange(() => 'descending');
+      setSortType('descending');
     } else if(sortType === 'descending') {
-      sortTypeChange(() => 'none');
+      setSortType('none');
     }
   }
 

@@ -12,13 +12,13 @@ import { useRef, useState } from 'react';
 function RowMultiAction() {
   const data = getVMData();
 
-  const [multiRowActionDrowdownHidden, toggleMultiRowActionDrowdown] = useState<boolean>(true);
+  const [multiRowActionDrowdownHidden, setMultiRowActionDrowdownHidden] = useState<boolean>(true);
   
   const toggleMultiRowActionOnClick = () => {
-    toggleMultiRowActionDrowdown(() => !multiRowActionDrowdownHidden); 
+    setMultiRowActionDrowdownHidden((hidden) => !hidden); 
   }
 
-  const multiRowActionAnchor = useRef(null);
+  const multiRowActionAnchor = useRef<HTMLElement | string | undefined>();
 
   return (
     <div className="demo-content">
@@ -54,7 +54,7 @@ function RowMultiAction() {
 
           <CdsGridFooter></CdsGridFooter>
         </CdsGrid>
-        <CdsDropdown {...{'hidden': multiRowActionDrowdownHidden, anchor: (multiRowActionAnchor.current as any)}}>
+        <CdsDropdown hidden={multiRowActionDrowdownHidden ? true : undefined} anchor={multiRowActionAnchor.current}>
           <CdsButton action="flat" block size="sm">Restart Selected</CdsButton>
           <CdsButton action="flat" block size="sm">Shutdown Selected</CdsButton>
         </CdsDropdown>

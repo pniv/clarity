@@ -6,7 +6,7 @@ import { CdsInput } from '@cds/react/input/';
 import { CdsControlMessage } from '@cds/react/forms';
 
 import { TestVM } from '@cds/core/demo';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { GridStateInterface, MockAPI } from '../utils/mock-api';
 import { CdsProgressCircle } from '@cds/react/progress-circle';
 import { CdsButtonAction } from '@cds/react/button-action';
@@ -15,6 +15,7 @@ import { ButtonSort } from '@cds/core/button-sort';
 import { CdsSearch } from '@cds/react/search';
 
 import { useDebounce } from 'use-debounce';
+import { useCallback } from 'react';
 
 
 function AsyncDataFull() {
@@ -26,63 +27,58 @@ function AsyncDataFull() {
   /* Filtering */
 
   const filterAnchorRef = useRef(null);
-
-  const [filterDrowdownHidden, toggleFilterDrowdown] = useState<boolean>(true);
-
-  const [filterValue, filterValueChange] = useState<string>("");
-
+  const [filterDrowdownHidden, setFilterDropdownHidden] = useState<boolean>(true);
+  const [filterValue, setFilterValue] = useState<string>("");
   const [debouncedFilterValue] = useDebounce(filterValue, 500);
-
+  
   const onFilterActionClick = () => {
-    toggleFilterDrowdown(() => !filterDrowdownHidden);
+    setFilterDropdownHidden((hidden) => !hidden);
   }
 
   const onFilterValueChange = (event: any) => {
-    filterValueChange(() => event.target.value);
+    setFilterValue(event.target.value);
   }
 
   /* Pagination */
   
   const pageSizes = [5, 10, 15, 100];
-
-  const [pageSize, pageSizeChange] = useState<number>(5);
-
-  const [totalPages, totalPagesChange] = useState<number>(0);
-
-  const [currentPage, currentPageChange] = useState<number>(0);
+  const [pageSize, setPageSize] = useState<number>(5);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(0);
 
   const onPageSizeChange = (event: any) => {
-    currentPageChange(() => 0);
-    pageSizeChange(() => event.target.value)
+    setCurrentPage(0);
+    setPageSize(event.target.value);
   }
 
   const onFirstPageClick = () => {
-    currentPageChange(() => 0);
+    setCurrentPage(0);
   }
 
   const onPrevPageClick = () => {
-    currentPageChange(() => currentPage - 1);
+    setCurrentPage((page) => page - 1);
   }
 
   const onNextPageClick = () => {
-    currentPageChange(() => currentPage + 1);
+    setCurrentPage((page) => page + 1);
   }
 
   const onLastPageClick = () => {
-    currentPageChange(() => totalPages - 1);
+    setCurrentPage(totalPages - 1);
   }
 
-  const onCurrentPageChange = (event: any) => {
-    if(event.target.value > totalPages) return;
-    if(event.target.value < 1) return;
-    currentPageChange(() => event.target.value - 1);
-  }
+  const onCurrentPageChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(event.target.value, 10);
+    if(value > totalPages) return;
+    if(value < 1) return;
+    setCurrentPage(value - 1);
+  }, [totalPages])
 
   /* Sorting */
 
   const [sortType, sortTypeChange] = useState<ButtonSort>("none");
 
-  const onSortActionClick = () => {
+  const onSortActionClick = useCallback(() => {
     if(sortType==="none") {
       sortTypeChange(() => "ascending");
     } else if(sortType === "ascending") {
@@ -90,31 +86,30 @@ function AsyncDataFull() {
     } else if(sortType === 'descending') {
       sortTypeChange(() => 'none');
     }
-  }
+  }, [sortType]);
 
-  const mockAPI = new MockAPI();
+  const mockAPI = useMemo(() => new MockAPI(), []);
 
-  const makeApiRequest = (state: GridStateInterface) => {
-    setDataLoaded(() => false);
+  const makeApiRequest = useCallback((state: GridStateInterface) => {
+    setDataLoaded(false);
     mockAPI.requestData(state).then((response: any) => {
-      setData(() => response.pageVMs);
-      totalPagesChange(() => response.totalPages);
+      setData(response.pageVMs);
+      setTotalPages(response.totalPages);
       if(response.totalPages <= currentPage) {
-        currentPageChange(() => response.totalPages - 1);
+        setCurrentPage(response.totalPages - 1);
       }
-      setDataLoaded(() => true);
+      setDataLoaded(true);
     })
-  }
+  }, [mockAPI, currentPage]);
 
   useEffect(() => {
     console.log("filter value change")
-    makeApiRequest({page: {current: currentPage, size: pageSize}, sort: {by: 'status', sortType}, filters: [{key: 'id', filterValue}]});
+    makeApiRequest({page: {current: currentPage, size: pageSize}, sort: {by: 'status', sortType}, filters: [{key: 'id', filterValue: debouncedFilterValue}]});
 
     return () => {
       mockAPI.disconnect();
     }
-    // eslint-disable-next-line
-  }, [pageSize, currentPage, sortType, debouncedFilterValue]);
+  }, [pageSize, currentPage, sortType, debouncedFilterValue, makeApiRequest, mockAPI]);
 
   
 
@@ -167,7 +162,7 @@ function AsyncDataFull() {
             </CdsPagination>
           </CdsGridFooter>
         </CdsGrid>
-        <CdsDropdown className="demo-filter-dropdown" {...{'hidden':filterDrowdownHidden, 'anchor': 'id-filter-demo'}} >
+        <CdsDropdown className="demo-filter-dropdown" anchor= 'id-filter-demo' hidden={filterDrowdownHidden ? true : undefined} >
           <CdsSearch control-width="shrink">
             <input type="search" aria-label="search hosts" onChange={onFilterValueChange} />
           </CdsSearch>

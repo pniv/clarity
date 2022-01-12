@@ -7,62 +7,54 @@ import { getVMData, TestVM } from '@cds/core/demo';
 
 function RowMultiSelect() {
 
-  const checkAllInput = useRef(null);
-
-  const [selectedItems, selected] = useState<TestVM[]>([]);
 
   const data = getVMData();
 
-  const selectedIds = () => {
-    return selectedItems.map(item => item.id);
-  }
+  const [selectedItems, setSelectedItems] = useState<TestVM[]>([]);
+
+  const selectedIds = () => selectedItems.map(item => item.id);
 
   const handleSelectedChange = (checked: boolean, item: TestVM) => {
     if (checked) {
-      selected(() => [...selectedItems, item]);
+      setSelectedItems([...selectedItems, item]);
     } else {
       const pos = selectedItems.findIndex(i => i.id === item.id);
 
       if (pos > -1) {
         selectedItems.splice(pos, 1);
-        selected(() => [...selectedItems]);
+        setSelectedItems([...selectedItems]);
       }
     }
   };
 
-  useEffect(() => {
-    if(selectedItems.length > 0 && selectedItems.length < data.length) {
-      (checkAllInput.current as any).indeterminate = true;
+  const handleSelectAllChange = (checked: boolean) => {
+    if(checked) {
+      setSelectedItems([...data]);
     } else {
-      (checkAllInput.current as any).indeterminate = false;
+      setSelectedItems([]);
+    }
+  }
+
+  const checkAllInputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    // checkbox is indeteterminate if some items are selected but not all
+    if(checkAllInputRef.current) {
+      checkAllInputRef.current.indeterminate = selectedItems.length > 0 && selectedItems.length < data.length
     }
   });
 
-  const handleSelectAllChange = (checked: boolean) => {
-    if(checked) {
-      selected(() => [...data]);
-    } else {
-      selected(() => []);
-    }
-  }
-
-  const displaySelectedItems = () => {
-    return selectedItems.map((item: TestVM, index) => (
-      <span key={item.id}>{item.id}{index===selectedItems.length - 1? "":", "}</span>
-    ));
-  }
 
   return (
     <div className="demo-content">
       <h2>Row Multi Select</h2>
       <div className="content">
         <p>
-          Selected items: [{displaySelectedItems()}]
+          Selected items: [{selectedItems.map(i =>i.id).join(", ")}]
         </p>
         <CdsGrid className="demo-grid" aria-multiselectable="true">
           <CdsGridColumn type="action">
             <CdsCheckbox>
-              <input type="checkbox" aria-label="select all hosts" ref={checkAllInput} onChange={event => handleSelectAllChange(event.target.checked)} />
+              <input type="checkbox" aria-label="select all hosts" ref={checkAllInputRef} onChange={event => handleSelectAllChange(event.target.checked)} />
             </CdsCheckbox>
           </CdsGridColumn>
           <CdsGridColumn>Host</CdsGridColumn>
