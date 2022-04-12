@@ -445,6 +445,10 @@ export interface ClrCommonStrings {
     current: string;
     currentPage: string;
     danger: string;
+    datagridExpandableBeginningOf?: string;
+    datagridExpandableEndOf?: string;
+    datagridExpandableRowContent?: string;
+    datagridExpandableRowsHelperText?: string;
     datagridFilterAriaLabel?: string;
     datagridFilterDialogAriaLabel?: string;
     dategridExpandableBeginningOf?: string;
@@ -453,6 +457,7 @@ export interface ClrCommonStrings {
     dategridExpandableRowsHelperText?: string;
     datepickerCurrentDecade: string;
     datepickerCurrentMonth: string;
+    datepickerDialogLabel: string;
     datepickerNextDecade: string;
     datepickerNextMonth: string;
     datepickerPreviousDecade: string;
@@ -460,6 +465,8 @@ export interface ClrCommonStrings {
     datepickerSelectMonthText: string;
     datepickerSelectYearText: string;
     datepickerToggle: string;
+    datepickerToggleChangeDateLabel: string;
+    datepickerToggleChooseDateLabel: string;
     delete?: string;
     detailExpandableAriaLabel: string;
     detailPaneEnd: string;
@@ -479,12 +486,19 @@ export interface ClrCommonStrings {
     next: string;
     nextPage: string;
     open: string;
+    passwordHide: string;
+    passwordShow: string;
     pickColumns: string;
     previous: string;
     previousPage: string;
+    responsiveNavOverflowClose: string;
+    responsiveNavOverflowOpen: string;
+    responsiveNavToggleClose: string;
+    responsiveNavToggleOpen: string;
     rowActions: string;
     select: string;
     selectAll: string;
+    selectedRows: string;
     selection?: string;
     show: string;
     showColumns: string;
@@ -685,7 +699,7 @@ export declare class ClrDatagridColumnSeparator implements AfterViewInit, OnDest
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnSeparator, never>;
 }
 
-export declare class ClrDatagridColumnToggle {
+export declare class ClrDatagridColumnToggle implements OnDestroy {
     get allColumnsVisible(): boolean;
     set allColumnsVisible(value: boolean);
     columnSwitchId: string;
@@ -697,8 +711,9 @@ export declare class ClrDatagridColumnToggle {
     openState: boolean;
     popoverId: string;
     smartPosition: ClrPopoverPosition;
-    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, columnSwitchId: string, platformId: any, zone: NgZone, popoverId: string);
+    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, columnSwitchId: string, platformId: any, zone: NgZone, popoverId: string, popoverToggleService: ClrPopoverToggleService);
     allColumnsSelected(): void;
+    ngOnDestroy(): void;
     toggleColumnState(columnState: ColumnState, event: boolean): void;
     toggleSwitchPanel(): void;
     trackByFn(index: number): number;
@@ -775,11 +790,12 @@ export interface ClrDatagridFilterInterface<T, S = any> {
 
 export declare class ClrDatagridFooter<T = any> {
     SELECTION_TYPE: typeof SelectionType;
+    commonStrings: ClrCommonStringsService;
     detailService: DetailService;
     get hasHideableColumns(): boolean;
     selection: Selection<T>;
     toggle: ClrDatagridColumnToggle;
-    constructor(selection: Selection<T>, detailService: DetailService, columnsService: ColumnsService);
+    constructor(selection: Selection<T>, detailService: DetailService, columnsService: ColumnsService, commonStrings: ClrCommonStringsService);
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFooter<any>, "clr-dg-footer", never, {}, {}, ["toggle"], ["clr-dg-column-toggle", "*", "clr-dg-pagination"]>;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFooter<any>, never>;
 }
@@ -882,6 +898,8 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterV
     get clrDgDetailCloseLabel(): string;
     set clrDgDetailOpenLabel(label: string);
     get clrDgDetailOpenLabel(): string;
+    set clrDgRowAriaLabel(label: string);
+    get clrDgRowAriaLabel(): string;
     set clrDgSelectable(value: boolean | string);
     get clrDgSelectable(): boolean | string;
     commonStrings: ClrCommonStringsService;
@@ -913,7 +931,7 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterV
     ngOnInit(): void;
     toggle(selected?: boolean): void;
     toggleExpand(): void;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "item": "clrDgItem"; "selected": "clrDgSelected"; "clrDgSelectable": "clrDgSelectable"; "expanded": "clrDgExpanded"; "clrDgDetailOpenLabel": "clrDgDetailOpenLabel"; "clrDgDetailCloseLabel": "clrDgDetailCloseLabel"; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-row-detail", "clr-dg-action-overflow", "clr-dg-cell"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "item": "clrDgItem"; "selected": "clrDgSelected"; "clrDgSelectable": "clrDgSelectable"; "expanded": "clrDgExpanded"; "clrDgDetailOpenLabel": "clrDgDetailOpenLabel"; "clrDgDetailCloseLabel": "clrDgDetailCloseLabel"; "clrDgRowAriaLabel": "clrDgRowAriaLabel"; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-row-detail", "clr-dg-action-overflow", "clr-dg-cell"]>;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, never>;
 }
 
@@ -1016,10 +1034,11 @@ export declare class ClrDateContainer extends ClrAbstractContainer implements Af
     protected ngControlService: NgControlService;
     get open(): boolean;
     get popoverPosition(): ClrPopoverPosition;
-    constructor(toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, commonStrings: ClrCommonStringsService, focusService: FocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
+    protected renderer: Renderer2;
+    constructor(renderer: Renderer2, toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
     ngAfterViewInit(): void;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container", never, { "clrPosition": "clrPosition"; }, {}, never, ["label", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, { optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, { optional: true; }, null, null]>;
 }
 
 export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
@@ -1055,10 +1074,11 @@ export declare class ClrDatepickerModule {
 }
 
 export declare class ClrDatepickerViewManager {
+    commonStrings: ClrCommonStringsService;
     get isDayView(): boolean;
     get isMonthView(): boolean;
     get isYearView(): boolean;
-    constructor(viewManagerService: ViewManagerService);
+    constructor(commonStrings: ClrCommonStringsService, viewManagerService: ViewManagerService);
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerViewManager, "clr-datepicker-view-manager", never, {}, {}, never, never>;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerViewManager, never>;
 }
@@ -1283,6 +1303,8 @@ export declare class ClrHeader implements OnDestroy {
     isNavLevel2OnPage: boolean;
     openNavLevel: number;
     responsiveNavCodes: typeof ResponsiveNavCodes;
+    get responsiveNavCommonString(): string;
+    get responsiveOverflowCommonString(): string;
     constructor(responsiveNavService: ResponsiveNavigationService, commonStrings: ClrCommonStringsService);
     closeOpenNav(): void;
     initializeNavTriggers(navList: number[]): void;
@@ -1480,6 +1502,7 @@ export declare class ClrModal implements OnChanges, OnDestroy {
     closable: boolean;
     commonStrings: ClrCommonStringsService;
     focusTrap: FocusTrapDirective;
+    labelledBy: string;
     modalId: string;
     size: string;
     skipAnimation: string;
@@ -1493,7 +1516,7 @@ export declare class ClrModal implements OnChanges, OnDestroy {
     }): void;
     ngOnDestroy(): void;
     open(): void;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": "clrModalOpen"; "closable": "clrModalClosable"; "size": "clrModalSize"; "staticBackdrop": "clrModalStaticBackdrop"; "skipAnimation": "clrModalSkipAnimation"; "bypassScrollService": "clrModalOverrideScrollService"; "stopClose": "clrModalPreventClose"; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, never, [".modal-nav", ".modal-title", ".modal-body", ".modal-footer"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": "clrModalOpen"; "closable": "clrModalClosable"; "size": "clrModalSize"; "staticBackdrop": "clrModalStaticBackdrop"; "skipAnimation": "clrModalSkipAnimation"; "bypassScrollService": "clrModalOverrideScrollService"; "stopClose": "clrModalPreventClose"; "labelledBy": "clrModalLabelledById"; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, never, [".modal-nav", ".modal-title", ".modal-body", ".modal-footer"]>;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
 }
 
@@ -1937,9 +1960,12 @@ export declare class ClrStackBlock implements OnInit {
     expandedChange: EventEmitter<boolean>;
     focused: boolean;
     get getChangedValue(): boolean;
+    get headingLevel(): string;
+    get labelledById(): any;
     get onStackLabelFocus(): boolean;
     get role(): string;
     set setChangedValue(value: boolean);
+    stackBlockTitle: any;
     get tabIndex(): string;
     uniqueId: string;
     constructor(parent: ClrStackBlock, uniqueId: string, commonStrings: ClrCommonStringsService);
@@ -1947,7 +1973,7 @@ export declare class ClrStackBlock implements OnInit {
     getStackChildrenId(): string;
     ngOnInit(): void;
     toggleExpand(): void;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": "clrSbExpanded"; "expandable": "clrSbExpandable"; "setChangedValue": "clrSbNotifyChange"; "ariaLevel": "clrStackViewLevel"; "ariaSetsize": "clrStackViewSetsize"; "ariaPosinset": "clrStackViewPosinset"; }, { "expandedChange": "clrSbExpandedChange"; }, never, ["clr-stack-label", "*", "clr-stack-block"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": "clrSbExpanded"; "expandable": "clrSbExpandable"; "setChangedValue": "clrSbNotifyChange"; "ariaLevel": "clrStackViewLevel"; "ariaSetsize": "clrStackViewSetsize"; "ariaPosinset": "clrStackViewPosinset"; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"]>;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{ optional: true; skipSelf: true; }, null, null]>;
 }
 
@@ -1991,15 +2017,24 @@ export declare class ClrStackView {
 }
 
 export declare class ClrStackViewCustomTags {
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackViewCustomTags, "clr-stack-label, clr-stack-content", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackViewCustomTags, "clr-stack-content", never, {}, {}, never>;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewCustomTags, never>;
+}
+
+export declare class ClrStackViewLabel implements OnInit {
+    set id(val: string);
+    get id(): string;
+    constructor(uniqueId: string);
+    ngOnInit(): void;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackViewLabel, "clr-stack-label", never, { "id": "id"; }, {}, never, ["*"]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewLabel, never>;
 }
 
 export declare class ClrStackViewModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewModule, never>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStackViewModule>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof i1.ClrStackView, typeof i2.ClrStackHeader, typeof i3.ClrStackBlock, typeof i4.ClrStackContentInput, typeof i5.ClrStackViewCustomTags, typeof i6.ClrStackInput, typeof i7.ClrStackSelect], [typeof i8.CommonModule, typeof i9.FormsModule, typeof i10.ClrIconModule, typeof i11.ClrExpandableAnimationModule], [typeof i1.ClrStackView, typeof i2.ClrStackHeader, typeof i3.ClrStackBlock, typeof i4.ClrStackContentInput, typeof i5.ClrStackViewCustomTags, typeof i6.ClrStackInput, typeof i7.ClrStackSelect]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof i1.ClrStackView, typeof i2.ClrStackHeader, typeof i3.ClrStackBlock, typeof i4.ClrStackContentInput, typeof i5.ClrStackViewLabel, typeof i5.ClrStackViewCustomTags, typeof i6.ClrStackInput, typeof i7.ClrStackSelect], [typeof i8.CommonModule, typeof i9.FormsModule, typeof i10.ClrIconModule, typeof i11.ClrExpandableAnimationModule], [typeof i1.ClrStackView, typeof i2.ClrStackHeader, typeof i3.ClrStackBlock, typeof i4.ClrStackContentInput, typeof i5.ClrStackViewLabel, typeof i5.ClrStackViewCustomTags, typeof i6.ClrStackInput, typeof i7.ClrStackSelect]>;
 }
 
 export declare class ClrStepButton implements OnInit {
@@ -2284,6 +2319,7 @@ export declare class ClrTreeNode<T> implements OnInit, OnDestroy {
     broadcastFocusOnContainer(): void;
     focusTreeNode(): void;
     isExpandable(): boolean;
+    isSelectable(): boolean;
     ngOnDestroy(): void;
     ngOnInit(): void;
     onKeyDown(event: KeyboardEvent): void;
@@ -2328,6 +2364,7 @@ export declare class ClrVerticalNavGroup implements AfterContentInit, OnDestroy 
     get expanded(): boolean;
     set expanded(value: boolean);
     expandedChange: EventEmitter<boolean>;
+    groupLabel: string;
     set userExpandedInput(value: boolean | string);
     constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, _navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
     collapseGroup(): void;
@@ -2336,7 +2373,7 @@ export declare class ClrVerticalNavGroup implements AfterContentInit, OnDestroy 
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
     toggleExpand(): void;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroup, "clr-vertical-nav-group", never, { "userExpandedInput": "clrVerticalNavGroupExpanded"; }, { "expandedChange": "clrVerticalNavGroupExpandedChange"; }, never, ["[clrVerticalNavLink]", "[clrVerticalNavIcon]", "*", "[clrIfExpanded], clr-vertical-nav-group-children"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroup, "clr-vertical-nav-group", never, { "groupLabel": "clrVerticalNavGroupLabel"; "userExpandedInput": "clrVerticalNavGroupExpanded"; }, { "expandedChange": "clrVerticalNavGroupExpandedChange"; }, never, ["[clrVerticalNavLink]", "[clrVerticalNavIcon]", "*", "[clrIfExpanded], clr-vertical-nav-group-children"]>;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavGroup, never>;
 }
 
@@ -2401,8 +2438,9 @@ export declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     set stopNext(value: boolean);
     get stopNext(): boolean;
     wizardFinished: EventEmitter<any>;
+    wizardId: string;
     wizardTitle: ElementRef;
-    constructor(platformId: any, navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService, headerActionService: HeaderActionService, elementRef: ElementRef, differs: IterableDiffers);
+    constructor(platformId: any, navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService, headerActionService: HeaderActionService, elementRef: ElementRef, differs: IterableDiffers, wizardId: string);
     cancel(): void;
     checkAndCancel(): void;
     close(): void;

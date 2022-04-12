@@ -1,6 +1,6 @@
 {
   "name": "clarity",
-  "version": "13.0.0",
+  "version": "13.0.2",
   "engines": {
     "yarn": "please-use-npm",
     "npm": ">= 6.14.0"
@@ -59,11 +59,12 @@
     "build:ci": "npm-run-all build:release build:website build:dev",
     "release:setversion": "node ./scripts/set-version.js",
     "release:add-release-notes": "node ./scripts/website-add-rel-notes.js",
-    "publish": "npm publish ./dist/clr-angular; npm publish ./dist/clr-ui; npm publish ./dist/clr-icons;",
-    "publish:rc": "npm publish ./dist/clr-angular --tag rc; npm publish ./dist/clr-ui --tag rc; npm publish ./dist/clr-icons --tag rc;",
-    "publish:next": "npm publish ./dist/clr-angular --tag next; npm publish ./dist/clr-ui --tag next; npm publish ./dist/clr-icons --tag next;",
-    "publish:local": "npm publish ./dist/clr-icons --registry http://localhost:4873 --tag local; npm publish ./dist/clr-ui --registry http://localhost:4873 --tag local; npm publish ./dist/clr-angular --registry http://localhost:4873 --tag local;",
-    "publish:verify": "node ./scripts/publish-verify.js"
+    "publish": "npm publish ./dist/clr-angular --tag latest && npm publish ./dist/clr-ui --tag latest && npm publish ./dist/clr-icons --tag latest",
+    "publish:rc": "npm publish ./dist/clr-angular --tag rc && npm publish ./dist/clr-ui --tag rc && npm publish ./dist/clr-icons --tag rc;",
+    "publish:next": "npm publish ./dist/clr-angular --tag next && npm publish ./dist/clr-ui --tag next && npm publish ./dist/clr-icons --tag next;",
+    "publish:local": "npm publish ./dist/clr-icons --registry http://localhost:4873 --tag local && npm publish ./dist/clr-ui --registry http://localhost:4873 --tag local && npm publish ./dist/clr-angular --registry http://localhost:4873 --tag local;",
+    "publish:verify": "node ./scripts/publish-verify.js",
+    "publish:verify:registry": "node ./scripts/version-validation.js"
   },
   "private": true,
   "dependencies": {
@@ -77,6 +78,7 @@
     "@angular/router": "~13.0.0",
     "@cds/angular": "^6.0.0-next.0",
     "@cds/core": "^6.0.0-next.0",
+    "@clr/angular": "^13.0.3",
     "dotenv": "8.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.1",

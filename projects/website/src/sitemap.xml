@@ -301,6 +301,18 @@
         <changefreq>daily</changefreq>
     </url>
     <url>
+        <loc>https://clarity.design/news/src/releases/13.x/13.0.x.html</loc>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>https://clarity.design/news/src/releases/13.x/13.0.2.html</loc>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>https://clarity.design/news/src/releases/13.x/13.0.1.html</loc>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
         <loc>https://clarity.design/news/src/releases/13.x/13.0.0.html</loc>
         <changefreq>daily</changefreq>
     </url>
@@ -310,6 +322,18 @@
     </url>
     <url>
         <loc>https://clarity.design/news/src/releases/13.x/13.0.0-next.0.html</loc>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>https://clarity.design/news/src/releases/12.x/12.0.x.html</loc>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>https://clarity.design/news/src/releases/12.x/12.0.12.html</loc>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>https://clarity.design/news/src/releases/12.x/12.0.11.html</loc>
         <changefreq>daily</changefreq>
     </url>
     <url>

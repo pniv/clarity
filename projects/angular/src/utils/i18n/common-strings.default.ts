@@ -56,7 +56,10 @@ export const commonStringsDefault: ClrCommonStrings = {
   // Alert
   alertCloseButtonAriaLabel: 'Close alert',
   // Date Picker
+  datepickerDialogLabel: 'Choose date',
   datepickerToggle: 'Toggle datepicker',
+  datepickerToggleChooseDateLabel: 'Choose date',
+  datepickerToggleChangeDateLabel: 'Change date, {SELECTED_DATE}',
   datepickerPreviousMonth: 'Previous month',
   datepickerCurrentMonth: 'Current month',
   datepickerNextMonth: 'Next month',
@@ -67,6 +70,11 @@ export const commonStringsDefault: ClrCommonStrings = {
   datepickerSelectYearText: 'Select year, the current year is {CALENDAR_YEAR}',
   // Stack View
   stackViewChanged: 'Value changed.',
+  // Responsive Nav
+  responsiveNavToggleOpen: 'Navigation menu',
+  responsiveNavToggleClose: 'Navigation menu',
+  responsiveNavOverflowOpen: 'Navigation overflow menu',
+  responsiveNavOverflowClose: 'Navigation overflow menu',
   //Vertical Nav
   verticalNavGroupToggle: 'Toggle vertical navigation group',
   verticalNavToggle: 'Toggle vertical navigation',
@@ -84,11 +92,23 @@ export const commonStringsDefault: ClrCommonStrings = {
   comboboxNoResults: 'No results',
   comboboxOpen: 'Show options',
   // Datagrid expandable rows
-  dategridExpandableBeginningOf: 'Beginning of',
-  dategridExpandableEndOf: 'End of',
-  dategridExpandableRowContent: 'Expandable row content',
-  dategridExpandableRowsHelperText: `Screen reader table commands may not work for viewing expanded content, please use your screen reader's browse mode to read the content exposed by this button`,
+  datagridExpandableBeginningOf: 'Beginning of',
+  datagridExpandableEndOf: 'End of',
+  datagridExpandableRowContent: 'Expandable row content',
+  datagridExpandableRowsHelperText: `Screen reader table commands may not work for viewing expanded content, please use your screen reader's browse mode to read the content exposed by this button`,
   // Wizard
   wizardStepSuccess: 'Completed',
   wizardStepError: 'Error',
+
+  /**
+   * Password Input
+   * Screen-reader text for the hide/show password field button
+   */
+  passwordHide: 'Hide password',
+  passwordShow: 'Show password',
+
+  /**
+   * Datagrid footer; sr-only text after the number of selected rows.
+   */
+  selectedRows: 'Selected rows',
 };

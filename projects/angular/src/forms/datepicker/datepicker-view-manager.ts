@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2021 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2022 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { Component } from '@angular/core';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
@@ -16,10 +17,12 @@ import { ViewManagerService } from './providers/view-manager.service';
   host: {
     '[class.datepicker]': 'true',
     '[attr.aria-modal]': 'true',
+    '[attr.aria-label]': 'commonStrings.keys.datepickerDialogLabel',
+    role: 'dialog',
   },
 })
 export class ClrDatepickerViewManager {
-  constructor(private viewManagerService: ViewManagerService) {}
+  constructor(public commonStrings: ClrCommonStringsService, private viewManagerService: ViewManagerService) {}
 
   /**
    * Returns if the current view is the monthpicker.

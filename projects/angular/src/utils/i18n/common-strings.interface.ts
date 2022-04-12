@@ -205,7 +205,10 @@ export interface ClrCommonStrings {
   /**
    * Datepicker UI labels
    */
+  datepickerDialogLabel: string;
   datepickerToggle: string;
+  datepickerToggleChooseDateLabel: string;
+  datepickerToggleChangeDateLabel: string;
   datepickerPreviousMonth: string;
   datepickerCurrentMonth: string;
   datepickerNextMonth: string;
@@ -218,6 +221,11 @@ export interface ClrCommonStrings {
    * Stack View: Record has changed
    */
   stackViewChanged: string;
+  // Responsive Nav
+  responsiveNavToggleOpen: string;
+  responsiveNavToggleClose: string;
+  responsiveNavOverflowOpen: string;
+  responsiveNavOverflowClose: string;
   // Vertical Nav
   verticalNavToggle: string;
   verticalNavGroupToggle: string;
@@ -231,10 +239,26 @@ export interface ClrCommonStrings {
   timelineStepProcessing: string;
 
   // Datagrid Helper text for expandable rows
+  /**
+   * @deprecated Should be removed in v14
+   */
   dategridExpandableBeginningOf?: string;
+  /**
+   * @deprecated Should be removed in v14
+   */
   dategridExpandableEndOf?: string;
+  /**
+   * @deprecated Should be removed in v14
+   */
   dategridExpandableRowContent?: string;
+  /**
+   * @deprecated Should be removed in v14
+   */
   dategridExpandableRowsHelperText?: string;
+  datagridExpandableBeginningOf?: string;
+  datagridExpandableEndOf?: string;
+  datagridExpandableRowContent?: string;
+  datagridExpandableRowsHelperText?: string;
 
   /**
    * Combobox Searching Text
@@ -255,4 +279,16 @@ export interface ClrCommonStrings {
    * Wizard: Screen-reader text for step with error.
    */
   wizardStepError: string;
+
+  /**
+   * Password Input
+   * Screen-reader text for the hide/show password field button.
+   */
+  passwordHide: string;
+  passwordShow: string;
+
+  /**
+   * Datagrid footer; sr-only text after the number of selected rows.
+   */
+  selectedRows: string;
 }
